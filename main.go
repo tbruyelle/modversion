@@ -1,14 +1,30 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
-	"time"
+	"os/exec"
 
+	"github.com/blang/semver"
 	"github.com/go-git/go-git/v5"
 	"golang.org/x/mod/module"
 )
 
 func main() {
+	var buf bytes.Buffer
+	cmd := exec.Command("git", "describe", "--tags", "--exclude", "v0.0*")
+	cmd.Stdout = &buf
+	err := cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+	ver, err := semver.ParseTolerant(buf.String())
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%#v\n", ver)
+	fmt.Println(ver.String())
+
 	repo, err := git.PlainOpen(".")
 	if err != nil {
 		panic(err)
@@ -17,11 +33,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	tag, err := repo.TagObject(ref.Hash())
+	commit, err := repo.CommitObject(ref.Hash())
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(tag)
 
-	module.PseudoVersion("0", "v0.24.0", time.Now(), "")
+	var (
+		major = fmt.Sprintf("v%d", ver.Major)
+		older = fmt.Sprintf("v%d.%d.%d", ver.Major, ver.Minor, ver.Patch)
+		rev   = ref.Hash().String()
+		date  = commit.Author.When
+	)
+	v := module.PseudoVersion(major, older, date, rev)
+	fmt.Println(v)
 }

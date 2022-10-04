@@ -3,6 +3,7 @@ module github.comt/tbruyelle/modversion
 go 1.19
 
 require (
+	github.com/blang/semver v3.5.1+incompatible
 	github.com/go-git/go-git/v5 v5.4.2
 	golang.org/x/mod v0.5.1
 )
