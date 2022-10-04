@@ -22,9 +22,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%#v\n", ver)
-	fmt.Println(ver.String())
-
 	repo, err := git.PlainOpen(".")
 	if err != nil {
 		panic(err)
