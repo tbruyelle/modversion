@@ -38,7 +38,7 @@ func main() {
 	var (
 		major = fmt.Sprintf("v%d", ver.Major)
 		older = fmt.Sprintf("v%d.%d.%d", ver.Major, ver.Minor, ver.Patch)
-		rev   = ref.Hash().String()
+		rev   = ref.Hash().String()[:12]
 		date  = commit.Author.When
 	)
 	v := module.PseudoVersion(major, older, date, rev)
