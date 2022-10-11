@@ -10,6 +10,9 @@ import (
 	"golang.org/x/mod/module"
 )
 
+// The result of this code can be achieved by running
+// go list -m -json modulepath@hash ...
+
 func main() {
 	var buf bytes.Buffer
 	cmd := exec.Command("git", "describe", "--tags",
