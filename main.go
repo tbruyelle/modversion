@@ -12,7 +12,10 @@ import (
 
 func main() {
 	var buf bytes.Buffer
-	cmd := exec.Command("git", "describe", "--tags", "--exclude", "v0.0*")
+	cmd := exec.Command("git", "describe", "--tags",
+		"--match", "v*",
+		"--exclude", "v0.0*",
+	)
 	cmd.Stdout = &buf
 	err := cmd.Run()
 	if err != nil {
