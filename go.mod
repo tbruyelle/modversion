@@ -1,4 +1,4 @@
-module github.comt/tbruyelle/modversion
+module github.com/tbruyelle/modversion
 
 go 1.19
 
